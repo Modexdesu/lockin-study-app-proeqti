@@ -1,0 +1,10 @@
+# Ignore the hidden Visual Studio cache/settings folder
+.vs/
+
+# Ignore build outputs (compiled code)
+[Bb]in/
+[Oo]bj/
+
+# Ignore user-specific settings files
+*.user
+*.suo

@@ -1,0 +1,12 @@
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\bin\Debug\net10.0\lockin.core.deps.json
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\bin\Debug\net10.0\lockin.core.dll
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\bin\Debug\net10.0\lockin.core.pdb
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\lockin.core.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\lockin.core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\lockin.core.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\lockin.core.AssemblyInfo.cs
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\lockin.core.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\lockin.core.dll
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\refint\lockin.core.dll
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\lockin.core.pdb
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\ref\lockin.core.dll

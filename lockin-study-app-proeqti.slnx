@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="lockin.business/lockin.business.csproj" Id="c6445c62-a22e-4ed6-b152-307d43e491e0" />
+  <Project Path="lockin.core/lockin.core.csproj" Id="7af2e88b-3d21-4af8-a443-f3962f436eac" />
+</Solution>

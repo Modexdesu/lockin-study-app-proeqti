@@ -13,3 +13,4 @@ C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.business\obj\Debug\ne
 C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.business\obj\Debug\net10.0\refint\lockin.business.dll
 C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.business\obj\Debug\net10.0\lockin.business.pdb
 C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.business\obj\Debug\net10.0\ref\lockin.business.dll
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.business\obj\Debug\net10.0\lockin.business.sourcelink.json

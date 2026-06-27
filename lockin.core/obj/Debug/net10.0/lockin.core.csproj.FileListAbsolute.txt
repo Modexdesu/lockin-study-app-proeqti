@@ -10,3 +10,4 @@ C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.
 C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\refint\lockin.core.dll
 C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\lockin.core.pdb
 C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\ref\lockin.core.dll
+C:\Users\user\source\repos\lockin-study-app-proeqti\lockin.core\obj\Debug\net10.0\lockin.core.sourcelink.json

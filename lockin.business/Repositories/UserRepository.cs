@@ -25,12 +25,14 @@ namespace lockin.business.Repositories
 
         public List<UserInfo> GetPlayersInSameLocation(int locationId, int currentUserId)
         {
-            if (locationId == 1) return new List<UserInfo>();
+            // 1. Defensive Validation: Guard against invalid database IDs
+            if (locationId <= 0) return new List<UserInfo>();
 
+            // 2. Query the PLAYERS table, not the Locations table
             return _context.UserInfo
-                           .Where(u => u.LocationId == locationId)
-                           .Where(u => u.UserId != currentUserId)  // Matched to UserId    
-                           .ToList();
+                           .Where(u => u.LocationId == locationId)   // Find players in this location
+                           .Where(u => u.UserId != currentUserId)     // Exclude the active player
+                           .ToList();                                 // Returns List<UserInfo> perfectly matching the interface
         }
 
         public void AddUser(UserInfo user)

@@ -47,7 +47,7 @@ namespace lockin.wpf
             // By default, AddDbContext uses Scoped. We override BOTH the context lifetime 
             // and the options lifetime to Transient so a new one is spawned and killed on demand.
             services.AddDbContext<lockindbcontext>(options =>
-                options.UseSqlServer(connectionString),
+                options.UseSqlite(connectionString),
                 ServiceLifetime.Transient,
                 ServiceLifetime.Transient);
 
@@ -55,7 +55,7 @@ namespace lockin.wpf
             // This forces the DI container to build a fresh repository with a fresh DB connection 
             // every single time a ViewModel asks for it.
             services.AddTransient<IQuestionRepository, QuestionRepository>();
-            services.AddTransient<IAnswerRepository, AnswerRepository>();
+           
             services.AddTransient<ITopicRepository, TopicRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 

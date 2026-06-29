@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("lockin.core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34137735ac4b22bb20a1e9d8dea702a6ae110b1e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0a0a4f4c22b30c9b367e5907f127c8c8106c0087")]
 [assembly: System.Reflection.AssemblyProductAttribute("lockin.core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("lockin.core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

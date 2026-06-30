@@ -18,7 +18,7 @@ namespace lockin.wpf
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
 
-            await _viewModel.GetAllTopicsAsync();
+           _viewModel.LoadTopicsAsync();
 
 
     }

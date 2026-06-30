@@ -21,8 +21,10 @@ namespace lockin.wpf.ViewModels
         private int _gameDifficulty = 1; // Default to 1 (Easy)
         private DispatcherTimer _lockinTimer;
         private Random _randomizer;
-        private List<string> _loadedQuestions;
+        private List<Question> _loadedQuestions;
+        public event Action OnLockinStopped;
         public event Action OnLockinStarted;
+        public ICommand RelaxCommand { get; set; }
 
         public ObservableCollection<Topic> Topics { get; set; }
 
@@ -31,6 +33,9 @@ namespace lockin.wpf.ViewModels
         public ICommand UpdateTopicCommand { get; set; }
         public ICommand DeleteTopicCommand { get; set; }
         public ICommand StartGameCommand { get; set; }
+
+
+
 
         // Bindable properties
         public string NewTopicName
@@ -82,16 +87,22 @@ namespace lockin.wpf.ViewModels
             _topicRepository = topicRepository;
             Topics = new ObservableCollection<Topic>();
 
-
+            
+           
             _randomizer= new Random();
-            _loadedQuestions= new List<string>();
+            _loadedQuestions= new List<Question>();
             _lockinTimer = new DispatcherTimer();
             _lockinTimer.Tick += LockinTimer_Tick;
-            // Wire up all CRUD endpoints
+            StartGameCommand = new RelayCommand(StartGame);
+            RelaxCommand = new RelayCommand(RelaxGame);
+
+
+            // Wire up all CRUD 
             AddTopicCommand = new RelayCommand(AddTopic);
             UpdateTopicCommand = new RelayCommand(UpdateTopic);
             DeleteTopicCommand = new RelayCommand(DeleteTopic);
             StartGameCommand = new RelayCommand(StartGame);
+           
         }
 
         // === CREATE ===
@@ -157,13 +168,30 @@ namespace lockin.wpf.ViewModels
             catch (Exception ex) { MessageBox.Show($"Delete failed: {ex.Message}"); }
         }
 
-        public async Task GetAllTopicsAsync()
+        public async void LoadTopicsAsync()
         {
-            var dbTopics = await _topicRepository.GetAllTopicsAsync();
-            foreach (var topic in dbTopics) Topics.Add(topic);
+            try
+            {
+                // 1. Fetch the data from the repo
+                var dbTopics = await _topicRepository.GetAllTopicsAsync();
+
+                // 2. Clear out any old items just in case
+                Topics.Clear();
+
+                // 3. Pour them into the ObservableCollection to alert the UI
+                foreach (var topic in dbTopics)
+                {
+                    Topics.Add(topic);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Error loading topics: {ex.Message}");
+            }
         }
 
-        public event System.ComponentModel.PropertyChangedEventHandler  PropertyChanged;
+        // Your existing notification code below it...
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name) => PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(name));
 
        
@@ -178,52 +206,45 @@ namespace lockin.wpf.ViewModels
             }
         }
 
-        private void StartGame()
+        private async void StartGame()
         {
-            // 1.pick a category error
+            // 1. Pick a category error
             if (SelectedTopic == null)
             {
                 MessageBox.Show("Please select a topic category before starting the lock-in.", "Setup Missing");
                 return;
             }
 
-            // 2.  find the specific question file for this topic
-            string directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TriviaQuestions");
-            string safeFileName = string.Join("_", SelectedTopic.TopicName.Split(Path.GetInvalidFileNameChars()));
-            string filePath = Path.Combine(directoryPath, $"{safeFileName}_Questions.txt");
-
-            if (!File.Exists(filePath))
-            {
-                MessageBox.Show("The question file for this topic is missing.", "File Error");
-                return;
-            }
-
-            // 3. Clear old questions 
+            // 2. Clear old questions 
             _loadedQuestions.Clear();
 
-            // 4. Read the text file and filter by Difficulty
-            string[] lines = File.ReadAllLines(filePath);
-            foreach (string line in lines)
+            try
             {
-                // Skip comment lines or empty lines
-                if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#")) continue;
+                // 3. Fetch the questions linked to this topic directly from SQLite
+                var databaseQuestions = await _topicRepository.GetQuestionsByTopicIdAsync(SelectedTopic.TopicId);
 
-                // Split the row by the  character
-                string[] segments = line.Split('|');
-                if (segments.Length >= 6 && int.TryParse(segments[5], out int difficulty))
+
+                // 4. Filter by Difficulty (If your Question model has a Difficulty property)
+                foreach (var q in databaseQuestions)
                 {
-                    if (difficulty == GameDifficulty)
+                    // Note: If you don't have a Difficulty property on your DB model yet, 
+                    // you can comment out this if statement and just do: _loadedQuestions.Add(q);
+                   // if (q.Difficulty == GameDifficulty)
                     {
-                        // Store the full valid question string in memory
-                        _loadedQuestions.Add(line);
+                        _loadedQuestions.Add(q);
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load questions from database: {ex.Message}", "Database Error");
+                return;
+            }
 
-            // 5.test questions
+            // 5. Test questions
             if (_loadedQuestions.Count == 0)
             {
-                MessageBox.Show("No questions found matching this difficulty level in the text file.", "No Data");
+                MessageBox.Show("No questions found matching this difficulty level in the database.", "No Data");
                 return;
             }
 
@@ -232,35 +253,70 @@ namespace lockin.wpf.ViewModels
 
             // 7. Start the first countdown
             ScheduleNextPopUp();
-
         }
-
-        public void ScheduleNextPopUp()
+        private void LockinTimer_Tick(object sender, EventArgs e)
         {
-            // Set random interval between 5 and 15 seconds for testing
+            // 1. Stop the clock to prevent multiple windows from spawning
+            _lockinTimer.Stop();
+
+            // 2. Pick a random question object from your database list
+            int randomQuestionIndex = _randomizer.Next(_loadedQuestions.Count);
+            Question selectedQuestion = _loadedQuestions[randomQuestionIndex];
+
+            // 3. Instantiate the window and show it as a dialog
+            // This stops execution on this line until the user closes the window
+            var qWindow = new lockin.wpf.Views.QuestionWindow(selectedQuestion);
+            qWindow.ShowDialog();
+
+            // 4. Once they are done, restart the timer
+            ScheduleNextPopUp();
+        }
+        private void ScheduleNextPopUp()
+        {
+            // Ensure you have _randomizer initialized in your constructor for this to work
             int randomSeconds = _randomizer.Next(5, 16);
 
             _lockinTimer.Interval = TimeSpan.FromSeconds(randomSeconds);
             _lockinTimer.Start();
         }
-
-        private void LockinTimer_Tick(object sender, EventArgs e)
+        private async void RelaxGame()
         {
-            // 1. Stop timer 
+            // 1. Kill the timer immediately
             _lockinTimer.Stop();
 
-            // 2. Pick a random question
-            int randomQuestionIndex = _randomizer.Next(_loadedQuestions.Count);
-            string selectedQuestionRow = _loadedQuestions[randomQuestionIndex];
+            // 2. Launch the Relax selection UI
+            var relaxWindow = new lockin.wpf.Views.RelaxWindow();
 
-            // 3. Temporary test pop-up (Will be replaced in Phase 2)
-            MessageBox.Show($"POP UP TRIGGERED!\n\nQuestion Data:\n{selectedQuestionRow}", "Hostage Situation");
+            // ShowDialog blocks execution until they make a choice
+            bool? result = relaxWindow.ShowDialog();
 
-            // 4. Restart loop after they click OK
-            ScheduleNextPopUp();
+            if (result == true)
+            {
+                if (relaxWindow.IsCompletelyStopped)
+                {
+                    // Fully terminate session
+                    _loadedQuestions.Clear();
+                    OnLockinStopped?.Invoke(); // Restores main window visibility
+                }
+                else
+                {
+                    // Start the async wait. The app stays responsive while it waits.
+                    await Task.Delay(relaxWindow.SelectedDuration);
+
+                    // Resume the game loop
+                    ScheduleNextPopUp();
+                }
+            }
+            else
+            {
+                // User closed the window without clicking - resume anyway
+                ScheduleNextPopUp();
+            }
         }
+    }
+
+
 
     }
 
 
-}

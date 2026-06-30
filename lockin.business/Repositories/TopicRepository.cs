@@ -25,6 +25,13 @@ namespace lockin.business.Repositories
             // 4. Uses singular '.Topic' to match your database schema
             return await _context.Topic.ToListAsync();
         }
+        public async Task<List<Question>> GetQuestionsByTopicIdAsync(int topicId)
+        {
+            // Reaches into the SQLite database, filters by the TopicId, and returns a list.
+            return await _context.Question
+                                 .Where(q => q.TopicId == topicId)
+                                 .ToListAsync();
+        }
 
         public async Task AddTopicAsync(Topic topic)
         {

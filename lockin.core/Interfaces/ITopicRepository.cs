@@ -8,6 +8,7 @@ namespace lockin.core.Interfaces
     {
         // Change from List<Topic> to Task<List<Topic>>
         Task<List<Topic>> GetAllTopicsAsync();
+        Task<List<Question>> GetQuestionsByTopicIdAsync(int topicId);
         Task AddTopicAsync(Topic topic);
         Task DeleteTopicAsync(Topic topic);
         Task UpdateTopicAsync(Topic topic);

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("lockin.wpf")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+784b805893a637c34427526e3038da8b8e74c3d3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+942553cc2d908b6061afdf4252d956f96948a035")]
 [assembly: System.Reflection.AssemblyProductAttribute("lockin.wpf")]
 [assembly: System.Reflection.AssemblyTitleAttribute("lockin.wpf")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

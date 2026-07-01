@@ -33,10 +33,30 @@ namespace lockin.business.Repositories
                                  .ToListAsync();
         }
 
+
+        public async Task<List<Question>> GetQuestionsAsync(int topicId, int difficulty)
+        {
+            return await _context.Question
+                                 .Where(q => q.TopicId == topicId && q.QuestionDifficulty == difficulty)
+                                 .ToListAsync();
+        }
         public async Task AddTopicAsync(Topic topic)
         {
-            await _context.Topic.AddAsync(topic);
+            // 1. Save to SQLite
+            _context.Topic.Add(topic);
             await _context.SaveChangesAsync();
+
+            // 2. Generate the text file in the background (Moved from ViewModel)
+            string directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TriviaQuestions");
+            if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
+
+            string safeFileName = string.Join("_", topic.TopicName.Split(Path.GetInvalidFileNameChars()));
+            string filePath = Path.Combine(directoryPath, $"{safeFileName}_Questions.txt");
+
+            if (!File.Exists(filePath))
+            {
+                File.WriteAllText(filePath, $"# Questions for {topic.TopicName}\n# Format: Question|Ans1|Ans2|Ans3|CorrectAns|DifficultyId(1-3)\n");
+            }
         }
 
         public async Task DeleteTopicAsync(Topic topic)
@@ -44,7 +64,7 @@ namespace lockin.business.Repositories
             _context.Topic.Remove(topic);
             await _context.SaveChangesAsync();
         }
-
+     
         public async Task UpdateTopicAsync(Topic topic)
         {
             _context.Topic.Update(topic);

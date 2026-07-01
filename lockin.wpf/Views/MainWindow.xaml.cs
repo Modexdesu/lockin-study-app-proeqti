@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using lockin.wpf.ViewModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace lockin.wpf
 {
@@ -9,16 +10,17 @@ namespace lockin.wpf
         public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
+            
 
             _viewModel= viewModel;
             this.DataContext = _viewModel;
             this.Loaded += MainWindow_Loaded;
         }
-
+        
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-
-           _viewModel.LoadTopicsAsync();
+            
+            _viewModel.LoadTopicsAsync();
 
 
     }

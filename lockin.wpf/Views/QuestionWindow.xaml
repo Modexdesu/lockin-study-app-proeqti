@@ -19,13 +19,13 @@
         <!-- 4 Answer Buttons (Blue) -->
         <UniformGrid Grid.Row="1" Columns="2" Rows="2" Margin="0,20,0,0">
             <Button x:Name="BtnA" Margin="5" Padding="15" Click="Answer_Click" 
-                    Background="#007ACC" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+                    Background="#1affff" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
             <Button x:Name="BtnB" Margin="5" Padding="15" Click="Answer_Click" 
-                    Background="#007ACC" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+                    Background="#1affff" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
             <Button x:Name="BtnC" Margin="5" Padding="15" Click="Answer_Click" 
-                    Background="#007ACC" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+                    Background="#1affff" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
             <Button x:Name="BtnD" Margin="5" Padding="15" Click="Answer_Click" 
-                    Background="#007ACC" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+                    Background="#1affff" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
         </UniformGrid>
     </Grid>
 </Window>

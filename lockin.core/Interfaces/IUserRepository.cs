@@ -7,11 +7,14 @@ namespace lockin.core.Interfaces
     {
         // Find a user by their unique ID
         UserInfo GetUserById(int id);
+        Task UpdateUserAsync(UserInfo user);
+        Task<UserInfo> GetCurrentUserAsync();
+        void ProcessAnswerResult(int userId, bool isCorrect, int topicId);
 
         // Fast-filter query to find players in the exact same city/country
         List<UserInfo> GetPlayersInSameLocation(int locationId, int currentUserId);
 
         // Add a new user profile to the database
-        void AddUser(UserInfo user);
+        void AddUser(UserInfo user); //void RemoveUser(UserInfo user);
     }
 }

@@ -12,5 +12,6 @@ namespace lockin.core.Interfaces
         Task AddTopicAsync(Topic topic);
         Task DeleteTopicAsync(Topic topic);
         Task UpdateTopicAsync(Topic topic);
+        Task<List<Question>> GetQuestionsAsync(int topicId, int difficulty);
     }
 }

@@ -20,6 +20,7 @@ namespace lockin.business.Data
         }
 
         public DbSet<Topic> Topic { get; set; }
+        public DbSet<Answer> Answer { get; set; }
         public DbSet<UserInfo> UserInfo { get; set; }
         public DbSet<Location> Location { get; set; }
 

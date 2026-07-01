@@ -5,6 +5,7 @@ using lockin.core.Interfaces;
 using lockin.core.Models;
 using lockin.business.Data;
 
+
 namespace lockin.business.Repositories
 {
     public class UserRepository : IUserRepository
@@ -14,6 +15,17 @@ namespace lockin.business.Repositories
         public UserRepository(lockindbcontext context)
         {
             _context = context;
+        }
+
+        public async Task<UserInfo> GetCurrentUserAsync()
+        {
+            return await _context.UserInfo.FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateUserAsync(UserInfo user)
+        {
+            _context.UserInfo.Update(user);
+            await _context.SaveChangesAsync();
         }
 
         public UserInfo GetUserById(int id)
